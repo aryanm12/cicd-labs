@@ -100,7 +100,7 @@ pipeline {
         stage('Smoke Test Container') {
             steps {
                 sh '''
-                    CONTAINER_ID=$(docker run -d cicd-lab-app:latest)
+                    CONTAINER_ID=$(docker run -d --network jenkins-setup_jenkins cicd-lab-app:latest)
 
                     sleep 5
 
