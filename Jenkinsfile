@@ -13,6 +13,10 @@ pipeline {
         PYTHON_ENV = 'test'
     }
 
+    triggers {
+        githubPush()
+    }
+
     stages {
         stage('Checkout') {
             steps {
