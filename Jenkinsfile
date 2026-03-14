@@ -100,13 +100,10 @@ pipeline {
         stage('Smoke Test Container') {
             steps {
                 sh '''
-                    CONTAINER_ID=$(docker run -d --network jenkins-setup_jenkins cicd-lab-app:latest)
-
+                    CONTAINER_ID=$(docker run -d cicd-lab-app:latest)
                     sleep 5
 
-                    CONTAINER_IP=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $CONTAINER_ID)
-
-                    HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://$CONTAINER_IP:8080/health)
+                    HTTP_CODE=$(docker exec $CONTAINER_ID curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/health)
 
                     docker stop $CONTAINER_ID
                     docker rm $CONTAINER_ID
