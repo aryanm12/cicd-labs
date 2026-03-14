@@ -101,9 +101,13 @@ pipeline {
             steps {
                 sh '''
                     CONTAINER_ID=$(docker run -d -p 9090:8080 cicd-lab-app:latest)
+                    CONTAINER_ID=$(docker run -d cicd-lab-app:latest)
+
                     sleep 5
 
-                    HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:9090/health)
+                    CONTAINER_IP=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $CONTAINER_ID)
+
+                    HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://$CONTAINER_IP:8080/health)
 
                     docker stop $CONTAINER_ID
                     docker rm $CONTAINER_ID
