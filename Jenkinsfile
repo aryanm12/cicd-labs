@@ -100,7 +100,6 @@ pipeline {
         stage('Smoke Test Container') {
             steps {
                 sh '''
-                    CONTAINER_ID=$(docker run -d -p 9090:8080 cicd-lab-app:latest)
                     CONTAINER_ID=$(docker run -d cicd-lab-app:latest)
 
                     sleep 5
